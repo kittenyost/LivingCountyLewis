@@ -1,0 +1,26 @@
+{
+  "name": "livingcountylewis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev:ssr": "ng run livingcountylewis:serve-ssr",
+    "serve:ssr": "node dist/livingcountylewis/server/main.js",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kittenyost/LivingCountyLewis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kittenyost/LivingCountyLewis/issues"
+  },
+  "homepage": "https://github.com/kittenyost/LivingCountyLewis#readme",
+  "description": ""
+}

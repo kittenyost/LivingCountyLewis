@@ -1,39 +1,39 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Configure Services
-builder.Services.AddControllers();
-builder.Services.AddSwaggerGen(c =>
+// ✅ ADD CORS POLICY (Update the allowed origin)
+builder.Services.AddCors(options =>
 {
-  c.SwaggerDoc("v1", new OpenApiInfo { Title = "LivingCountyLewis API", Version = "v1" });
+    options.AddPolicy("AllowAngular",
+        policy => policy.WithOrigins("http://localhost:4200") // ✅ Allow Angular App
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());  // ✅ Ensure credentials are allowed
 });
 
-builder.Services.AddCors();
+// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "LivingCountyLewisAPI", Version = "v1" });
+});
+
 var app = builder.Build();
 
-// ✅ Configure Middleware
-if (app.Environment.IsDevelopment())
+// ✅ ENABLE CORS BEFORE AUTHORIZATION
+app.UseCors("AllowAngular");
+
+if (app.Environment.IsDevelopment()) // ✅ Ensure Swagger is enabled in development mode
 {
-  app.UseSwagger();
-  app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "LivingCountyLewisAPI v1");
+    });
 }
 
-app.UseRouting();
-
-app.UseCors(policy =>
-    policy.AllowAnyOrigin()
-          .AllowAnyMethod()
-          .AllowAnyHeader());
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
