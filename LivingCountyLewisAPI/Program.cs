@@ -4,31 +4,39 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args); // ✅ Ensure this exists
+var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Enable CORS (Cross-Origin Requests)
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+// ✅ Add services here
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
+// ✅ Add CORS Policy (If needed)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(MyAllowSpecificOrigins,
-        policy =>
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
         {
-            policy.WithOrigins("http://localhost:4200")
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
         });
 });
 
-// ✅ Register Controllers
-builder.Services.AddControllers();
+var app = builder.Build(); // ✅ Declare `app` BEFORE using it
 
-var app = builder.Build(); // ✅ Ensure this exists
+// ✅ Middleware setup (AFTER `app` is declared)
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-// ✅ Enable middleware
-app.UseCors(MyAllowSpecificOrigins); // Allow frontend to call API
-app.UseRouting();
+// ✅ Apply CORS Policy
+app.UseCors("AllowAllOrigins");
+
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+app.Run(); // ✅ Final execution
