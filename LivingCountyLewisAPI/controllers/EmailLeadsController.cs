@@ -1,8 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using LivingCountyLewisAPI.Data;
 using LivingCountyLewisAPI.Models;
+using System.Threading.Tasks;
+using System;
 
-namespace YourProjectNamespace.Controllers
+namespace LivingCountyLewisAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,12 +21,23 @@ namespace YourProjectNamespace.Controllers
         public async Task<IActionResult> PostEmailLead([FromBody] EmailLead emailLead)
         {
             if (!ModelState.IsValid)
+            {
+                Console.WriteLine("❌ Invalid model");
                 return BadRequest(ModelState);
+            }
 
-            _context.EmailLeads.Add(emailLead);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Email saved successfully!" });
+            try
+            {
+                _context.EmailLeads.Add(emailLead);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"✅ Saved email: {emailLead.Email}");
+                return Ok(new { message = "Email saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"🚨 Exception: {ex.Message}");
+                return StatusCode(500, "Server error");
+            }
         }
     }
 }

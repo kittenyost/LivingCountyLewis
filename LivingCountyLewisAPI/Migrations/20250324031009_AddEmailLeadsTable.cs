@@ -5,7 +5,7 @@
 namespace LivingCountyLewisAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMissingEmailLeadsTable : Migration
+    public partial class AddEmailLeadsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

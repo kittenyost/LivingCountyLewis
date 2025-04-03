@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivingCountyLewisAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250322040653_AddMissingEmailLeadsTable")]
-    partial class AddMissingEmailLeadsTable
+    [Migration("20250402003228_AddAreaAndMessageToEmailLead")]
+    partial class AddAreaAndMessageToEmailLead
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

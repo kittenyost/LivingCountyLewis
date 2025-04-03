@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivingCountyLewisAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250322032126_AddEmailLeadsTable")]
+    [Migration("20250324031009_AddEmailLeadsTable")]
     partial class AddEmailLeadsTable
     {
         /// <inheritdoc />
